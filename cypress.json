@@ -1,0 +1,24 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "ignoreTestFiles": [
+    "**/__snapshots__/*",
+    "**/__image_snapshots__/*"
+  ],
+  "env": {
+    "cypress-plugin-snapshots": {
+      "imageConfig": {
+        "createDiffImage": true,
+        "resizeDevicePixelRatio": true,
+        "threshold": 0.01,
+        "thresholdType": "percent"
+      }
+    }
+  },
+  "fixturesFolder": false,
+  "pluginsFile": "./tests/functional/plugins/index.ts",
+  "supportFile": "./tests/functional/support/index.ts",
+  "screenshotsFolder": "./tests/functional/screenshots",
+  "integrationFolder": "./tests/functional/integration",
+  "video": false,
+  "viewportWidth": 1280
+}

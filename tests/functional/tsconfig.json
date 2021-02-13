@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "types": [
+      "node",
+      "cypress",
+      "cypress-testing-library",
+      "cypress-plugin-snapshots"
+    ],
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
+    "baseUrl": "../node_modules",
+    "lib": [
+      "ES2015",
+      "DOM"
+    ],
+    "paths": {
+      "@app/*": ["../src/*"]
+    }
+  },
+  "include": [
+    "../node_modules/cypress/types",
+    "../node_modules/@testing-library/cypress/typings",
+    "../node_modules/cypress-plugin-snapshots",
+    "**/*.ts",
+  ],
+  "exclude": [
+    "../node_modules/@types/jest/*"
+  ]
+}
