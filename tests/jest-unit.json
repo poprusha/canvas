@@ -8,10 +8,9 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "testRegex": "(/tests/.*|\\.(test|spec))\\.(ts|js)$",
+  "testRegex": "(/tests/.*\\.(test|spec))\\.(ts|js)$",
   "moduleNameMapper": {
     "^@app/(.*)$": "<rootDir>/../src/$1"
   },
   "roots": ["<rootDir>/unit"]
-
 }
