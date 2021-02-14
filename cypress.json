@@ -10,15 +10,16 @@
         "createDiffImage": true,
         "resizeDevicePixelRatio": true,
         "threshold": 0.01,
-        "thresholdType": "percent"
+        "thresholdType": "pixel"
       }
     }
   },
   "fixturesFolder": false,
-  "pluginsFile": "./tests/functional/plugins/index.ts",
-  "supportFile": "./tests/functional/support/index.ts",
-  "screenshotsFolder": "./tests/functional/screenshots",
-  "integrationFolder": "./tests/functional/integration",
+  "pluginsFile": "tests/functional/plugins/index.ts",
+  "supportFile": "tests/functional/support/index.ts",
+  "screenshotsFolder": "tests/functional/screenshots",
+  "integrationFolder": "tests/functional/integration",
   "video": false,
-  "viewportWidth": 1280
+  "viewportWidth": 1280,
+  "viewportHeight": 768
 }

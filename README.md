@@ -17,9 +17,27 @@
 прямоугольников.
 Приложение должно быть реализовано без применения сторонних библиотек.
 
-use "yarn dev" to start your local server.
-use "yarn build-dev" to build application.
-use "yarn format" to format prettier.
-use "yarn unit-tests" to start unit-tests.
-use "yarn functional-tests" to start cypress-tests.
-use "yarn cypress" to open cypress.
+to start your local server use:
+```
+yarn dev
+```
+to build your application use:
+```
+yarn build-dev
+```
+to format prettier use:
+```
+yarn format
+```
+to start unit-tests use:
+```
+yarn unit-tests
+```
+to start cypress-tests use:
+```
+yarn functional-tests
+```
+to open cypress use:
+```
+yarn cypress
+```

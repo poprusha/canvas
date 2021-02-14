@@ -20,6 +20,10 @@ export type WrapperInternalConfiguration = {
   rulerNumberLabelOptions: RulerNumberLabelOptions;
   // padding for wrapper
   correctionSide: Coordinates;
+  //small ruler step
+  smallRulerStep: number;
+  //big ruler step
+  bigRulerStep: number;
   //font for label
   font: string;
 };
@@ -50,16 +54,28 @@ export class WrapperConfiguration {
   public getCorrectionSideX(): number {
     return this.configuration.correctionSide.x;
   }
+
   public getRulerStepX(): number {
     return this.configuration.rulerStep.x;
   }
+
   public getRulerStepY(): number {
     return this.configuration.rulerStep.y;
   }
+
   public getRulerLabelStepX(): number {
     return this.configuration.rulerNumberLabelOptions.step.x;
   }
+
   public getRulerLabelStepY(): number {
     return this.configuration.rulerNumberLabelOptions.step.y;
+  }
+
+  public getSmallRulerStep(): number {
+    return this.configuration.smallRulerStep;
+  }
+
+  public getBigRulerStep(): number {
+    return this.configuration.bigRulerStep;
   }
 }

@@ -3,6 +3,8 @@ import {
   WrapperConfiguration,
   WrapperInternalConfiguration,
 } from '@app/wrapper/wrapper.configuration';
+import { Mediator } from '@app/mediator';
+import { wrapperInternalConfiguration } from '@app/wrapper/wrapper.internal.configuration';
 
 export type BoardDimensions = {
   width: number;
@@ -35,9 +37,8 @@ export class Wrapper {
 
   public render(board: BoardDimensions): void {
     const ctx = this.get2dContext();
-
     this.updateFont(this.configuration.getFont());
-    this.updateDimensions(board);
+    this.updateDimensions();
 
     const configuration = this.configuration.getInternalConfiguration();
 
@@ -69,10 +70,16 @@ export class Wrapper {
     configuration: WrapperInternalConfiguration,
     call: (option: DrawOption) => void
   ): void {
-    const { rulerStep, smallDivisionsHeight, largeDivisionsHeight, rulerNumberLabelOptions } = configuration;
+    const {
+      rulerStep,
+      smallDivisionsHeight,
+      largeDivisionsHeight,
+      rulerNumberLabelOptions,
+      smallRulerStep,
+    } = configuration;
     const ctx = this.get2dContext();
 
-    for (let i = 0; i < size; i += 10) {
+    for (let i = 0; i < size; i += smallRulerStep) {
       call({
         ctx,
         increment: i,
@@ -80,14 +87,16 @@ export class Wrapper {
           x: rulerStep.x,
           y: rulerStep.y,
         },
-        divisionsHeight: Wrapper.isBigDivision(i) ? largeDivisionsHeight : smallDivisionsHeight,
+        divisionsHeight: Wrapper.isBigDivision(i, wrapperInternalConfiguration.bigRulerStep)
+          ? largeDivisionsHeight
+          : smallDivisionsHeight,
         rulerNumberLabelOptions,
       });
     }
   }
 
-  private static isBigDivision(value: number): boolean {
-    return Number.isInteger(value / 100);
+  private static isBigDivision(value: number, bigRulerStep: number): boolean {
+    return Number.isInteger(value / bigRulerStep);
   }
 
   private static renderRulerX(options: DrawOption): void {
@@ -101,7 +110,8 @@ export class Wrapper {
     Wrapper.renderLabelRuler(
       options,
       increment + rulerNumberLabelOptions.step.x + rulerNumberLabelOptions.position.startX.x,
-      rulerNumberLabelOptions.position.startX.y
+      rulerNumberLabelOptions.position.startX.y,
+      wrapperInternalConfiguration.bigRulerStep
     );
   }
 
@@ -116,22 +126,24 @@ export class Wrapper {
     Wrapper.renderLabelRuler(
       options,
       rulerNumberLabelOptions.position.startY.x,
-      increment + rulerNumberLabelOptions.position.startY.y
+      increment + rulerNumberLabelOptions.position.startY.y,
+      wrapperInternalConfiguration.bigRulerStep
     );
   }
 
-  private static renderLabelRuler(options: DrawOption, x: number, y: number): void {
+  private static renderLabelRuler(options: DrawOption, x: number, y: number, bigRulerStep: number): void {
     const { increment } = options;
 
-    if (!Wrapper.isBigDivision(increment)) {
+    if (!Wrapper.isBigDivision(increment, bigRulerStep)) {
       return;
     }
 
-    Wrapper.draftLabel(options, x, y);
+    Wrapper.draftLabel(options, x, y, wrapperInternalConfiguration.bigRulerStep);
   }
-  private static draftLabel(options: DrawOption, x: number, y: number): void {
+
+  private static draftLabel(options: DrawOption, x: number, y: number, bigRulerStep: number): void {
     const { increment, ctx } = options;
-    ctx.fillText((increment / 100).toString(), x, y);
+    ctx.fillText((increment / bigRulerStep).toString(), x, y);
   }
 
   private static draftStroke(ctx: CanvasRenderingContext2D, cor: lineCoordinates): void {
@@ -139,20 +151,19 @@ export class Wrapper {
     ctx.lineTo(cor.lineTo.x, cor.lineTo.y);
   }
 
-  private updateDimensions(board: BoardDimensions): void {
-    this.wrapper.width = this.calcWidth(board.width);
-    this.wrapper.height = this.calcHeight(board.height);
+  private updateDimensions(): void {
+    this.wrapper.width = this.calcWidth();
+    this.wrapper.height = this.calcHeight();
   }
 
-  private calcHeight(height: number): number {
-    // return Mediator.getInnerHeight() - this.configuration.getCorrectionSideY();
-    return height + this.configuration.getCorrectionSideY();
+  private calcHeight(): number {
+    return Mediator.getInnerHeight() - this.configuration.getCorrectionSideY();
   }
 
-  private calcWidth(width: number): number {
-    // return Mediator.getInnerWidth() - this.configuration.getCorrectionSideX();
-    return width + this.configuration.getCorrectionSideX();
+  private calcWidth(): number {
+    return Mediator.getInnerWidth() - this.configuration.getCorrectionSideX();
   }
+
   private setReadyStatus(): void {
     this.wrapper.setAttribute('ready', 'true');
   }

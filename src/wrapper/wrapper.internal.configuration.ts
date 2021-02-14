@@ -1,6 +1,8 @@
 export const wrapperInternalConfiguration = {
   largeDivisionsHeight: 10,
   smallDivisionsHeight: 3,
+  smallRulerStep: 10,
+  bigRulerStep: 100,
   rulerStep: {
     x: 25,
     y: 25,
@@ -22,8 +24,8 @@ export const wrapperInternalConfiguration = {
     },
   },
   correctionSide: {
-    y: 20,
-    x: 20,
+    y: 25,
+    x: 250,
   },
   font: '11px Arial',
 };

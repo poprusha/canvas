@@ -2,12 +2,15 @@ import 'jest-canvas-mock';
 import { WrapperConfiguration } from '@app/wrapper/wrapper.configuration';
 import { Wrapper } from '@app/wrapper/wrapper';
 import { wrapperInternalConfiguration } from '@app/wrapper/wrapper.internal.configuration';
+import { Mediator } from '@app/mediator';
 
 describe('Wrapper: ', () => {
   test('config should be equal', () => {
     const configuration = {
       largeDivisionsHeight: 10,
       smallDivisionsHeight: 3,
+      smallRulerStep: 10,
+      bigRulerStep: 100,
       rulerStep: {
         x: 25,
         y: 25,
@@ -40,6 +43,8 @@ describe('Wrapper: ', () => {
     expect(wrapperConfiguration.getSmallDivisionsHeight()).toEqual(configuration.smallDivisionsHeight);
     expect(wrapperConfiguration.getRulerStepX()).toEqual(configuration.rulerStep.x);
     expect(wrapperConfiguration.getRulerStepY()).toEqual(configuration.rulerStep.y);
+    expect(wrapperConfiguration.getSmallRulerStep()).toEqual(configuration.smallRulerStep);
+    expect(wrapperConfiguration.getBigRulerStep()).toEqual(configuration.bigRulerStep);
     expect(wrapperConfiguration.getRulerLabelStepX()).toEqual(configuration.rulerNumberLabelOptions.step.x);
     expect(wrapperConfiguration.getRulerLabelStepY()).toEqual(configuration.rulerNumberLabelOptions.step.y);
     expect(wrapperConfiguration.getCorrectionSideX()).toEqual(configuration.correctionSide.x);
@@ -49,14 +54,14 @@ describe('Wrapper: ', () => {
 
   test('should be change size', () => {
     const size = {
-      width: 400,
-      height: 200,
+      width: Mediator.getInnerWidth(),
+      height: Mediator.getInnerHeight(),
     };
     const canvas = document.createElement('canvas');
     const wrapper = new Wrapper(canvas, new WrapperConfiguration(wrapperInternalConfiguration));
     wrapper.render(size);
     const ctx = wrapper.get2dContext().canvas;
-    expect(ctx.width).toEqual(size.width + wrapperInternalConfiguration.correctionSide.x);
-    expect(ctx.height).toEqual(size.height + wrapperInternalConfiguration.correctionSide.y);
+    expect(ctx.width).toEqual(size.width - wrapperInternalConfiguration.correctionSide.x);
+    expect(ctx.height).toEqual(size.height - wrapperInternalConfiguration.correctionSide.y);
   });
 });
