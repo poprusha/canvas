@@ -1,18 +1,32 @@
 import { Mediator } from '@app/mediator';
-// import { ConfigurationValidator } from '@app/configuration/configuration.validator';
 import { BoardSettings } from '@app/board/board.settings';
 import { WrapperConfiguration } from '@app/wrapper/wrapper.configuration';
 import { BoardDefaultConfiguration } from '@app/board/board.default.configuration';
 import { wrapperInternalConfiguration } from '@app/wrapper/wrapper.internal.configuration';
+import { Rect } from '@app/rect/rect';
+import { RectsFixtures } from '@app/fixtures/rects.fixtures';
+import { RectDefaultConfiguration } from '@app/rect/rect.default.configuration';
+import { ConfigurationValidator } from '@app/configuration/configuration.validator';
+import { RectTransformer } from '@app/rect/rect.transformer';
 
 export enum Mode {
   DEV = 'dev',
   TEST = 'test',
 }
 
+export type RectConfigurationOptions = {
+  beginX: number;
+  beginY: number;
+  offset: number;
+};
+
 export type DroppableConfiguration = {
   board: BoardSettings;
   wrapper: WrapperConfiguration;
+  rects: {
+    items: Rect[];
+    option: RectConfigurationOptions;
+  };
   root: string;
   mode: Mode;
 };
@@ -26,6 +40,10 @@ export class Configuration {
 
   private static loadDefault(): DroppableConfiguration {
     return {
+      rects: {
+        items: RectsFixtures.load(),
+        option: RectDefaultConfiguration.option,
+      },
       board: new BoardSettings(BoardDefaultConfiguration),
       wrapper: new WrapperConfiguration(wrapperInternalConfiguration),
       root: BoardDefaultConfiguration.root,
@@ -33,9 +51,23 @@ export class Configuration {
     };
   }
 
+  public getRects(): Rect[] {
+    return this.configuration.rects.items;
+  }
+
+  public getRectsOption(): RectConfigurationOptions {
+    return this.configuration.rects.option;
+  }
+
   private static loadTest(): DroppableConfiguration {
-    console.log('LOAD TEST CONFIGURATION');
     const testConfiguration = Mediator.getTestConfiguration();
+    const errors = ConfigurationValidator.validate(testConfiguration);
+
+    if (errors.length) {
+      throw { errors };
+    }
+
+    testConfiguration.rects.items = RectTransformer.transform(testConfiguration.rects.items);
 
     return testConfiguration;
   }
@@ -50,9 +82,5 @@ export class Configuration {
 
   public getRoot(): string {
     return this.configuration.root;
-  }
-
-  public getMode(): Mode {
-    return this.configuration.mode;
   }
 }

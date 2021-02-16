@@ -13,8 +13,8 @@ export class Mediator {
     window.onresize = callable;
   }
 
-  public static addEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
-    window.addEventListener(type, listener);
+  public static addDOMContentLoadedListener(listener: EventListenerOrEventListenerObject): void {
+    window.addEventListener('DOMContentLoaded', listener);
   }
 
   public static isTestMode(): boolean {

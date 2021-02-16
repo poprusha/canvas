@@ -4,6 +4,7 @@ import { Wrapper } from '@app/wrapper/wrapper';
 import { NodeCreator } from '@app/node.creator';
 import { Configuration } from '@app/configuration/configuration';
 import { Mediator } from '@app/mediator';
+import { RectPlaning } from '@app/rect/rect.planing';
 
 export class Droppable {
   private readonly configuration: Configuration;
@@ -14,7 +15,7 @@ export class Droppable {
   }
 
   private init(): void {
-    Mediator.addEventListener('DOMContentLoaded', () => this.listener());
+    Mediator.addDOMContentLoadedListener(() => this.listener());
   }
 
   private listener(): void {
@@ -26,7 +27,9 @@ export class Droppable {
 
     const wrapper = new Wrapper(nodeList.wrapper, this.configuration.getWrapperConfiguration());
     const board = new Board(nodeList.board, this.configuration.getBoardSettings());
+    const rects = this.configuration.getRects();
+    RectPlaning.placeRects(rects, this.configuration.getRectsOption());
 
-    new Manager(board, wrapper).start();
+    new Manager(board, wrapper, rects).start();
   }
 }

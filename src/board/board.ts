@@ -1,5 +1,6 @@
 import { Mediator } from '@app/mediator';
 import { BoardSettings } from '@app/board/board.settings';
+import { Rect } from '@app/rect/rect';
 
 export class Board {
   private readonly context: CanvasRenderingContext2D;
@@ -8,6 +9,20 @@ export class Board {
     this.context = boardCanvas.getContext('2d') as CanvasRenderingContext2D;
     this.resize();
     this.resize = this.resize.bind(this);
+  }
+
+  public drawRects(rects: Rect[]): void {
+    rects.forEach((el: Rect) => this.drawRect(el));
+  }
+
+  private drawRect(rect: Rect): void {
+    const { color, lineWidth, strokeStyle, y, x, width, height } = rect.getRenderOptions();
+
+    this.context.fillStyle = color;
+    this.context.lineWidth = lineWidth;
+    this.context.strokeStyle = strokeStyle;
+    this.context.fillRect(x, y, width, height);
+    this.context.strokeRect(x, y, width, height);
   }
 
   public getCanvas(): HTMLCanvasElement {
