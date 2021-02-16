@@ -7,8 +7,8 @@ export const settings = {
   },
   window: {
     size: {
-      width: 1280,
-      height: 768,
+      width: 1000,
+      height: 660,
     },
     testSize: {
       width: 1000,

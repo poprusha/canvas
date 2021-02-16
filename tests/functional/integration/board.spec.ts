@@ -1,7 +1,14 @@
-import { routes } from '../configuration/routes';
 import { settings } from '../configuration/settings';
+import { routes } from '../configuration/routes';
 
-describe('Testing Board', () => {
+describe('Testing Board App', () => {
+  it('should see a board with rects', () => {
+    cy.visit(routes.main);
+    cy.waitInitialization(settings.board.querySelector);
+
+    cy.document().toMatchImageSnapshot();
+  });
+
   it('should see resizable', () => {
     cy.visit(routes.main);
     cy.waitInitialization(settings.board.querySelector);

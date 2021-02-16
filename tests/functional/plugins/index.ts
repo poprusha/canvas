@@ -3,7 +3,7 @@ import { initPlugin } from 'cypress-plugin-snapshots/plugin';
 // @ts-ignore
 import * as browserify from '@cypress/browserify-preprocessor';
 
-module.exports = (on: any, config: any): void => {
+module.exports = (on: any, config: any) => {
   initPlugin(on, config);
 
   on(
