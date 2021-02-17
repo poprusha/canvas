@@ -1,9 +1,11 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import path from 'path';
 
 module.exports = {
   context: path.join(__dirname, './'),
+  mode: 'development',
   resolve: {
     alias: {
       '@app': path.resolve(__dirname, './src'),
@@ -28,6 +30,7 @@ module.exports = {
     },
   },
   output: {
+    path: path.join(__dirname, 'dist'),
     filename: '[name].[chunkhash].js',
   },
   module: {
@@ -70,6 +73,7 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
+    new CleanWebpackPlugin(),
   ],
   devtool: 'inline-source-map',
 };

@@ -23,8 +23,9 @@ module.exports = {
     jest: true
   },
   rules: {
-    'max-len': ['error', { 'code': 130 }],
     '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'max-len': ['error', { 'code': 120 }],
     'newline-before-return': 2,
     'quotes': ['error', 'single', { 'allowTemplateLiterals': false }],
     '@typescript-eslint/prefer-readonly': ['error']
