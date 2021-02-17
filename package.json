@@ -53,6 +53,7 @@
     "serve": "webpack serve",
     "dev": "webpack serve --config webpack.config.ts --open",
     "build-dev": "rimraf dist && webpack --config webpack.config.ts",
+    "build-prod": "rimraf dist && webpack --config webpack.prod.config.ts",
     "format": "prettier --write \"{src,tests}/**/*.ts\"",
     "lint": "eslint \"{src,tests}/**/*.ts\" --fix",
     "unit-tests": "jest --config tests/jest-unit.json",
