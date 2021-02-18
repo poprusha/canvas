@@ -17,11 +17,11 @@ export type DefaultConfiguration = {
 export const RectDefaultConfiguration = {
   mouseClickHitRange: 20,
   connectingRectSize: 10,
-  mouseAmendmentX: 8,
-  mouseAmendmentY: 8,
+  mouseAmendmentX: 18,
+  mouseAmendmentY: 18,
   sideWidth: 230,
   collusionRectColor: 'red',
-  color: 'green',
+  color: '#c3c395',
   lineWidth: 2,
   strokeStyle: 'black',
   option: {

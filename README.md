@@ -41,3 +41,15 @@ to open cypress use:
 ```
 yarn cypress
 ```
+to run tests via docker-compose:
+```
+docker-compose -f docker-compose.test.yml run cypress
+```
+build via docker-compose:
+```
+docker-compose build
+```
+up via docker-compose:
+```
+docker-compose up -d
+```
