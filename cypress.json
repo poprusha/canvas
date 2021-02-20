@@ -20,6 +20,6 @@
   "screenshotsFolder": "tests/functional/screenshots",
   "integrationFolder": "tests/functional/integration",
   "video": false,
-  "viewportWidth": 1280,
-  "viewportHeight": 768
+  "viewportWidth": 1000,
+  "viewportHeight": 660
 }

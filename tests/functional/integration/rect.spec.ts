@@ -40,10 +40,10 @@ describe('Testing Rect', () => {
     cy.visit(routes.main);
     cy.waitInitialization(settings.board.querySelector);
 
-    cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(0, { to: { x: 400, y: 150 } }));
+    cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(0, { to: { x: 500, y: 150 } }));
     cy.dragTo(
       settings.board.querySelector,
-      RectTestHelper.calcDragTo(1, { to: { x: 400 - RectTestHelper.getSecondRectOption().width - 15, y: 150 } })
+      RectTestHelper.calcDragTo(1, { to: { x: 500 - RectTestHelper.getSecondRectOption().width - 15, y: 150 } })
     );
 
     cy.document().toMatchImageSnapshot();
@@ -53,13 +53,15 @@ describe('Testing Rect', () => {
     cy.visit(routes.main);
     cy.waitInitialization(settings.board.querySelector);
 
-    cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(0, { to: { x: 400, y: 150 } }));
+    const firstRectCoordinates = { x: 400, y: 100 };
 
-    const moveTo = { x: 400, y: 150 + RectTestHelper.getFirstRectOption().height + 25 };
+    cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(0, { to: firstRectCoordinates }));
+
+    const moveTo = { x: 400, y: 125 + RectTestHelper.getFirstRectOption().height + 25 };
 
     cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(1, { to: moveTo }));
 
-    cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(1, { to: { x: 400, y: 150 }, start: moveTo }));
+    cy.dragTo(settings.board.querySelector, RectTestHelper.calcDragTo(1, { to: firstRectCoordinates, start: moveTo }));
 
     cy.waitForRequestAnimationFrame();
 

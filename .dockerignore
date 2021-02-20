@@ -1,0 +1,12 @@
+dist
+.idea
+node_modules
+.git
+docker-compose.yml
+*.md
+.gitignore
+Makefile
+x
+.dockerignore
+tests/functional/screenshots/
+test-results/

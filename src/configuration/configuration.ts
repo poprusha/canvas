@@ -8,10 +8,10 @@ import { RectsFixtures } from '@app/fixtures/rects.fixtures';
 import { RectDefaultConfiguration } from '@app/rect/rect.default.configuration';
 import { ConfigurationValidator } from '@app/configuration/configuration.validator';
 import { RectTransformer } from '@app/rect/rect.transformer';
+import { DefaultConfiguration } from '@app/configuration/default.configuration';
 
 export enum Mode {
-  DEV = 'dev',
-  TEST = 'test',
+  TEST = 'TEST',
 }
 
 export type RectConfigurationOptions = {
@@ -28,7 +28,7 @@ export type DroppableConfiguration = {
     option: RectConfigurationOptions;
   };
   root: string;
-  mode: Mode;
+  mode?: Mode;
 };
 
 export class Configuration {
@@ -46,8 +46,7 @@ export class Configuration {
       },
       board: new BoardSettings(BoardDefaultConfiguration),
       wrapper: new WrapperConfiguration(wrapperInternalConfiguration),
-      root: BoardDefaultConfiguration.root,
-      mode: Mode.DEV,
+      root: DefaultConfiguration.root,
     };
   }
 
@@ -62,14 +61,25 @@ export class Configuration {
   private static loadTest(): DroppableConfiguration {
     const testConfiguration = Mediator.getTestConfiguration();
     const errors = ConfigurationValidator.validate(testConfiguration);
+    const {
+      board: { font, pierColor },
+      root,
+    } = testConfiguration;
 
     if (errors.length) {
       throw { errors };
     }
 
-    testConfiguration.rects.items = RectTransformer.transform(testConfiguration.rects.items);
-
-    return testConfiguration;
+    return {
+      wrapper: new WrapperConfiguration(wrapperInternalConfiguration),
+      root,
+      board: new BoardSettings({ font, pierColor }),
+      rects: {
+        items: RectTransformer.transform(testConfiguration.rects.items),
+        option: RectDefaultConfiguration.option,
+      },
+      mode: Mode.TEST,
+    };
   }
 
   public getBoardSettings(): BoardSettings {

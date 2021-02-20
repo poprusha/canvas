@@ -9,7 +9,7 @@ declare namespace Cypress {
     end: Coordinates;
   };
 
-  interface Chainable<Subject = any> {
+  interface Chainable {
     waitInitialization(selector: string): Cypress.Chainable<HTMLElement>;
 
     dragTo(selector: string, options: DragCoordinates, isNeedMouseup: boolean = true);

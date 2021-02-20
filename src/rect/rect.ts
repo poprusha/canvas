@@ -165,17 +165,17 @@ export class Rect {
   }
 
   public mouseDragHandler(e: MouseEvent): boolean {
-    const clientX = e.clientX - this.configuration.mouseAmendmentX;
-    const clientY = e.clientY - this.configuration.mouseAmendmentY;
+    const x = e.clientX - this.configuration.mouseAmendmentX;
+    const y = e.clientY - this.configuration.mouseAmendmentY;
 
-    if (!this.isNearToAnotherRect(clientX, clientY)) {
+    if (!this.isNearToAnotherRect({ x, y })) {
       return false;
     }
 
     this.startPosition.x = this.x;
     this.startPosition.y = this.y;
     this.drag = true;
-    this.centeringToDot(clientX, clientY);
+    this.centeringToDot({ x, y });
 
     return true;
   }
@@ -201,7 +201,10 @@ export class Rect {
       return;
     }
 
-    this.centeringToDot(e.clientX - this.configuration.mouseAmendmentX, e.clientY - this.configuration.mouseAmendmentY);
+    this.centeringToDot({
+      x: e.clientX - this.configuration.mouseAmendmentX,
+      y: e.clientY - this.configuration.mouseAmendmentY,
+    });
   }
 
   private isCrossed(rect: Rect): boolean {
@@ -229,7 +232,12 @@ export class Rect {
     );
   }
 
-  private isNearToAnotherRect(x: number, y: number, hitRange: number = this.configuration.mouseClickHitRange): boolean {
+  private isNearToAnotherRect(
+    coordinates: Coordinates,
+    hitRange: number = this.configuration.mouseClickHitRange
+  ): boolean {
+    const { x, y } = coordinates;
+
     return Rect.isCrossed(
       {
         x: x - hitRange,
@@ -280,7 +288,9 @@ export class Rect {
     };
   }
 
-  private centeringToDot(x: number, y: number): void {
+  private centeringToDot(coordinates: Coordinates): void {
+    const { x, y } = coordinates;
+
     this.updateCoordinates({ x: x - this.width / 2, y: y - this.height / 2 });
   }
 

@@ -1,3 +1,5 @@
+<details>
+<summary>Task description</summary>
 В коде можно создать любое количество объектов, представляющих информацию о
 прямоугольниках разных размеров.
 Каждый прямоугольник должен отображаться на HTML канвасе. Канвас имеет размеры экрана с
@@ -16,40 +18,44 @@
 Сцепление должно срабатывать таким образом, чтобы в результате не возникло пересечений
 прямоугольников.
 Приложение должно быть реализовано без применения сторонних библиотек.
+</details>
 
-to start your local server use:
+Start your local server use:
 ```
 yarn dev
 ```
-to build your application use:
+
+Build your application use:
 ```
 yarn build-dev
 ```
-to format prettier use:
+
+Format prettier use:
 ```
 yarn format
 ```
-to start unit-tests use:
+
+Start unit-tests use:
 ```
 yarn unit-tests
 ```
-to start cypress-tests use:
+
+Run functional tests via docker-compose, you need:
+#### Build the image:
 ```
-yarn functional-tests
+docker-compose -f docker-compose.test.yml build
 ```
-to open cypress use:
-```
-yarn cypress
-```
-to run tests via docker-compose:
+#### and then:
 ```
 docker-compose -f docker-compose.test.yml run cypress
 ```
-build via docker-compose:
+
+build web image via docker-compose:
 ```
 docker-compose build
 ```
-up via docker-compose:
+
+start web image via docker-compose:
 ```
 docker-compose up -d
 ```

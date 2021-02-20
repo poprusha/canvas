@@ -1,4 +1,5 @@
 import { Mode } from '@app/configuration/configuration';
+import { TestConfiguration } from '../tests/functional/configuration/test.configuration';
 
 export class Mediator {
   public static getInnerHeight(): number {
@@ -18,10 +19,10 @@ export class Mediator {
   }
 
   public static isTestMode(): boolean {
-    return window['APP_MODE'] === Mode.TEST;
+    return window.APP_TEST_CONFIGURATION?.mode === Mode.TEST;
   }
 
-  public static getTestConfiguration(): any {
-    return window['APP_TEST_CONFIGURATION'];
+  public static getTestConfiguration(): TestConfiguration {
+    return window.APP_TEST_CONFIGURATION;
   }
 }

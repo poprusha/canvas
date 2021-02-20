@@ -11,13 +11,13 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5",
-    "baseUrl": "../../node_modules",
+    "baseUrl": ".",
     "lib": [
       "ES2015",
       "DOM"
     ],
     "paths": {
-      "@app/*": ["../src/*"]
+      "@app/*": ["../../src/*"]
     }
   },
   "include": [

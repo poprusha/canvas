@@ -7,6 +7,7 @@ export class ErrorConfigurationOption implements ConstraintInterface {
     return this.message;
   }
 
+  //TODO add payload
   public getPayload(): any {
     return {};
   }

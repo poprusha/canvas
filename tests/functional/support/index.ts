@@ -1,6 +1,7 @@
 import 'cypress-plugin-snapshots/commands';
 import DragCoordinates = Cypress.DragCoordinates;
 import { testConfiguration } from '../configuration/test.configuration';
+import addContext from 'mochawesome/addContext';
 
 Cypress.Commands.add('waitInitialization', (selector: string) => cy.get(selector).should('have.attr', 'ready', 'true'));
 Cypress.Commands.add('waitForRequestAnimationFrame', (value = 100) => cy.wait(value));
@@ -30,7 +31,20 @@ Cypress.Commands.add('dragTo', (selector: string, options: DragCoordinates, isNe
   }
 });
 
-Cypress.on('window:before:load', () => {
-  window.APP_MODE = testConfiguration.mode;
+Cypress.on('window:before:load', (): void => {
   window.APP_TEST_CONFIGURATION = testConfiguration;
+});
+
+Cypress.on('test:after:run', (test: Cypress.ObjectLike, runnable: Mocha.Test): void => {
+  if (test.state === 'failed') {
+    //const MAX_SPEC_NAME_LENGTH = 220;
+    // const fullTestName = nameParts
+    //             .filter(Boolean)
+    //             .join(" -- ")
+    //             .slice(0, MAX_SPEC_NAME_LENGTH);
+
+    const screenshot = `screenshots/${Cypress.spec.name}/${runnable?.parent?.title} -- ${test.title} (failed).png`;
+
+    addContext({ test }, screenshot);
+  }
 });
