@@ -1,0 +1,9 @@
+{
+  "reporterEnabled": "mochawesome",
+  "mochawesomeReporterOptions": {
+    "reportDir": "test-results/functional/json",
+    "overwrite": false,
+    "html": false,
+    "json": true
+  }
+}

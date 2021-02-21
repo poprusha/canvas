@@ -12,5 +12,6 @@
   "moduleNameMapper": {
     "^@app/(.*)$": "<rootDir>/../src/$1"
   },
+  "reporters": [ "default", "jest-junit" ],
   "roots": ["<rootDir>/unit"]
 }

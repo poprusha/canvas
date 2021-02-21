@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!main'
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Restore cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Linter
+        uses: reviewdog/action-eslint@v1
+        with:
+          tool_name: eslint-github-check
+          reporter: github-check
+          eslint_flags: 'src/'
+          fail_on_error: true
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Restore cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Unit Tests
+        run: yarn unit-tests
+
+      - name: Publish Unit Test Results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: test-results/junit/**/*.xml
+          report_individual_runs: true
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          path: test-results/junit/*.xml
+
+  functional-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          image_name: cypress
+          image_tag: latest
+          push_git_tag: false
+          context: .
+          dockerfile: /docker/cypress/Dockerfile
+
+      - name: Run Functional Tests
+        run: mkdir -m 0777 test-results && docker run -v $PWD/test-results:/opt/app/test-results "${{ secrets.DOCKERHUB_USER }}/cypress"
+
+      - name: Upload Tests Report Page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: test-results/functional/reports
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  buid-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          image_name: app
+          image_tag: latest
+          push_git_tag: false
+          context: .
+          dockerfile: /docker/web/Dockerfile

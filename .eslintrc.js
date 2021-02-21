@@ -25,6 +25,8 @@ module.exports = {
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     'max-len': ['error', { 'code': 120 }],
     'newline-before-return': 2,
     'quotes': ['error', 'single', { 'allowTemplateLiterals': false }],

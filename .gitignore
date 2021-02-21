@@ -1,4 +1,8 @@
+dist
 .idea
 node_modules
-dist
-*.log
+/TZ/
+/test/
+/x
+tests/functional/screenshots/
+test-results/
