@@ -20,7 +20,7 @@
 Приложение должно быть реализовано без применения сторонних библиотек.
 </details>
 
-![Imgur Image](https://i.gifer.com/3O7XM.gif)
+![Demo](https://i.imgur.com/KWOTFaC.gif)
 
 [DEMO ONLINE](https://kind-panini-5f4a4e.netlify.app/)
 
