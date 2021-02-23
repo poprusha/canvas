@@ -20,6 +20,10 @@
 Приложение должно быть реализовано без применения сторонних библиотек.
 </details>
 
+![Demo](https://i.gifer.com/3O7XM.gif)
+
+[DEMO ONLINE](https://kind-panini-5f4a4e.netlify.app/)
+
 Start your local server use:
 ```
 yarn dev
