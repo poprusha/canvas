@@ -118,3 +118,15 @@ jobs:
           push_git_tag: false
           context: .
           dockerfile: /docker/web/Dockerfile
+
+  auto-approve:
+    if: ${{ github.event.workflow_run.event == 'pull_request' }}
+    needs:
+      - buid-image
+      - functional-tests
+      - unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/auto-approve-action@v2.0.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
