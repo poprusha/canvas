@@ -1,0 +1,48 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Quality
+        uses: ./.github/actions/quality
+        with:
+          tool_name: eslint-github-pr-review
+          reporter: github-pr-review
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Unit Test
+        uses: ./.github/actions/unit-tests
+
+  functional-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Functional Tests
+        uses: ./.github/actions/functional-tests
+
+  buid-image-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Test Build Image
+        uses: ./.github/actions/buid-image
+
+  auto-approve:
+    if: success()
+    needs:
+      - quality
+      - buid-image-test
+      - functional-tests
+      - unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/auto-approve-action@v2.0.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+

@@ -1,0 +1,39 @@
+name: Run Quality Code
+description: Run quality code and reviewdog
+
+inputs:
+  tool_name:
+    description: 'Which tool_name to use'
+    required: true
+  reporter:
+    description: 'Which reporter to use'
+    required: true
+  eslint_flags:
+    description: 'Which eslint_flags to use'
+    required: false
+    default: '--config=.eslintrc.js'
+
+runs:
+  using: composite
+  steps:
+    - name: LS
+      run: ls -la
+
+    - name: Restore cache
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          node-modules-
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Run Linter
+      uses: reviewdog/action-eslint@v1
+      with:
+        tool_name: ${{ inputs.tool_name }}
+        reporter: ${{ inputs.reporter }}
+        eslint_flags: ${{ inputs.eslint_flags }}
+        fail_on_error: true

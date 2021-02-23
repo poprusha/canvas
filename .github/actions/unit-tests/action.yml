@@ -1,0 +1,33 @@
+name: 'Run Unit Tests'
+description: 'Run unit tests and save report'
+
+runs:
+  using: composite
+    steps:
+      - name: Restore cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Unit Tests
+        run: yarn unit-tests
+
+      - name: Publish Unit Test Results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: test-results/junit/**/*.xml
+          report_individual_runs: true
+          hide_comments: all but latest
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          path: test-results/junit/*.xml

@@ -1,0 +1,29 @@
+name: Run Functional Tests
+description: Run Functional Tests and create reports
+
+runs:
+  using: composite
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          image_name: cypress
+          image_tag: latest
+          push_git_tag: false
+          context: .
+          dockerfile: /docker/cypress/Dockerfile
+
+      - name: Run Functional Tests
+        run: mkdir -m 0777 test-results && docker run -v $PWD/test-results:/opt/app/test-results "${{ secrets.DOCKERHUB_USER }}/cypress"
+
+      - name: Upload Tests Report Page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: test-results/functional/reports
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
