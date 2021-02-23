@@ -5,7 +5,9 @@ on:
     branches:
       - '*'
       - '!main'
-
+    paths:
+      - './**/*.(ts|js)'
+      - 'docker/**'
 jobs:
   quality:
     runs-on: ubuntu-latest
@@ -29,7 +31,7 @@ jobs:
         with:
           tool_name: eslint-github-check
           reporter: github-check
-          eslint_flags: 'src/'
+          eslint_flags: '--config=.eslintrc.js'
           fail_on_error: true
 
   unit-tests:
